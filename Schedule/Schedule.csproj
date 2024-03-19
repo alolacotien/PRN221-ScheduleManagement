@@ -25,6 +25,7 @@
     <Folder Include="Pages\Schedule\" />
     <Folder Include="Pages\Subject\" />
     <Folder Include="Pages\Teacher\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
