@@ -16,7 +16,6 @@ namespace Schedule.Models
         {
         }
 
-        public virtual DbSet<Building> Buildings { get; set; } = null!;
         public virtual DbSet<GroupClass> GroupClasses { get; set; } = null!;
         public virtual DbSet<Room> Rooms { get; set; } = null!;
         public virtual DbSet<Schedule> Schedules { get; set; } = null!;
@@ -28,26 +27,13 @@ namespace Schedule.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var ConnectionString = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetConnectionString("DefaultConnection");
-                optionsBuilder.UseSqlServer(ConnectionString);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("server = (local); database = ScheduleManagement; uid=sa; pwd=123; TrustServerCertificate=true");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Building>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.Code)
-                    .HasMaxLength(255)
-                    .HasColumnName("code");
-
-                entity.Property(e => e.Details)
-                    .HasMaxLength(255)
-                    .HasColumnName("details");
-            });
-
             modelBuilder.Entity<GroupClass>(entity =>
             {
                 entity.ToTable("GroupClass");
@@ -68,11 +54,6 @@ namespace Schedule.Models
                 entity.Property(e => e.Code)
                     .HasMaxLength(255)
                     .HasColumnName("code");
-
-                entity.HasOne(d => d.Building)
-                    .WithMany(p => p.Rooms)
-                    .HasForeignKey(d => d.BuildingId)
-                    .HasConstraintName("rooms_buildingid_foreign");
             });
 
             modelBuilder.Entity<Schedule>(entity =>

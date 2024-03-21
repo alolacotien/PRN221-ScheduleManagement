@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CsvHelper" Version="31.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.28">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -21,11 +22,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Building\" />
-    <Folder Include="Pages\Schedule\" />
     <Folder Include="Pages\Subject\" />
     <Folder Include="Pages\Teacher\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Room\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Room\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Room\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Room\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Room\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Class\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Class\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Class\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Class\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Class\Index.cshtml" />
   </ItemGroup>
 
 </Project>
