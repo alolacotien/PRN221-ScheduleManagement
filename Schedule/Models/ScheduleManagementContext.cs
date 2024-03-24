@@ -49,8 +49,6 @@ namespace Schedule.Models
             {
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.BuildingId).HasColumnName("buildingId");
-
                 entity.Property(e => e.Code)
                     .HasMaxLength(255)
                     .HasColumnName("code");
@@ -63,10 +61,6 @@ namespace Schedule.Models
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.ClassId).HasColumnName("classId");
-
-                entity.Property(e => e.Date)
-                    .HasColumnType("datetime")
-                    .HasColumnName("date");
 
                 entity.Property(e => e.RoomId).HasColumnName("roomId");
 
@@ -140,10 +134,6 @@ namespace Schedule.Models
                 entity.Property(e => e.Code)
                     .HasMaxLength(255)
                     .HasColumnName("code");
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(255)
-                    .HasColumnName("email");
 
                 entity.Property(e => e.FullName)
                     .HasMaxLength(255)

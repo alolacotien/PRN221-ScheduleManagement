@@ -1,0 +1,57 @@
+@page
+@model Schedule.Pages.ScheduleMn.Index
+
+@{
+    ViewData["Title"] = "View Schedule";
+}
+
+<style>
+    th, td {
+    border: 1px solid black;
+    padding: 6px 20px 6px 20px;
+    }
+    
+    
+    table{
+       border-collapse: collapse;
+       }
+</style>
+
+<h2>Schedule</h2>
+<br/>
+
+<table>
+    <tr>
+        <th>
+        </th>
+        <th>MON</th>
+        <th>TUE</th>
+        <th>WED</th>
+        <th>THU</th>
+        <th>FRI</th>
+        <th>SAT</th>
+        <th>SUN</th>
+    </tr>
+
+    @for (int i = 0; i < 4; i++)
+    {
+        <tr>
+            <td>Slot @(i + 1)</td>
+            @for (int j = 0; j < 7; j++)
+            {
+                if (Model.Data[i, j] != null)
+                {
+                    <td>
+                        @Model.Data[i, j].Subject.Code <br/> 
+                        @Model.Data[i, j].Room.Code <br/>
+                        @Model.Data[i, j].Teacher.Code
+                    </td>
+                }
+                else
+                {
+                    <td></td>
+                }
+            }
+        </tr>
+    }
+</table>

@@ -66,4 +66,35 @@ public class ValidationService
 
         return "";
     }
+    
+    public string MessageValidateSchedule(Models.Schedule schedule)
+    {
+        string message = "";
+
+        message = CheckClassAndSubject(schedule);
+        if(message != "")
+        {
+            return message;
+        }
+
+        message = CheckSlotAndRoom(schedule);
+        if (message != "")
+        {
+            return message;
+        }
+
+        message = CheckSlotAndTeacher(schedule);
+        if (message != "")
+        {
+            return message;
+        }
+
+        message = CheckSlotAndClass(schedule);
+        if (message != "")
+        {
+            return message;
+        }
+
+        return message;
+    }
 }

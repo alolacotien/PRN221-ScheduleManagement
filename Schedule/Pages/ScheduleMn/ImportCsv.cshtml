@@ -1,0 +1,28 @@
+@page
+@model Schedule.Pages.ScheduleMn.ImportCsv
+
+<!DOCTYPE html>
+
+<h3>Import Schedule from CSV file</h3>
+<br/>
+
+@if (ViewData["Messages"] != null)
+{
+    <div class="alert">@ViewData["Messages"]</div>
+}
+
+<form method="post" enctype="multipart/form-data" asp-page-handler="ImportCsv">
+    <input style="margin-bottom: 10px; margin-top: 10px" type="file" id="csvFile" name="csvFile"/>
+    <br/>
+    <button type="submit" id="submitButton" disabled>Import</button>
+</form>
+
+<script>
+    document.getElementById('csvFile').addEventListener('change', function() {
+        if (this.value) {
+            document.getElementById('submitButton').disabled = false;
+        } else {
+            document.getElementById('submitButton').disabled = true;
+        }
+    });
+</script>

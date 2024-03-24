@@ -3,7 +3,7 @@ using Schedule.DTO;
 
 namespace Schedule.Mapper;
 
-public sealed class DataMapper : ClassMap<DataDTO>
+public sealed class DataMapper : ClassMap<CsvDataDTO>
 {
     public DataMapper()
     {
@@ -11,6 +11,6 @@ public sealed class DataMapper : ClassMap<DataDTO>
         Map(m => m.Subject).Index(1);
         Map(m => m.Room).Index(2);
         Map(m => m.Teacher).Index(3);
-        Map(m => m.TimeSlot).Index(4);
+        Map(m => m.Slot).Index(4);
     }
 }

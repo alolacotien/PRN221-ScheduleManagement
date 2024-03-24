@@ -22,11 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Subject\" />
-    <Folder Include="Pages\Teacher\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Room\Create.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Room\Delete.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Room\Details.cshtml" />
@@ -37,6 +32,14 @@
     <_ContentIncludedByDefault Remove="Pages\Class\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Class\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Class\Index.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Import\Schedule.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Import\" />
   </ItemGroup>
 
 </Project>
