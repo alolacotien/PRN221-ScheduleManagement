@@ -1,15 +1,11 @@
 @page
 @model Schedule.Pages.ScheduleMn.ImportCsv
 
-<!DOCTYPE html>
+<!-- Add toastr CSS -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
 
 <h3>Import Schedule from CSV file</h3>
 <br/>
-
-@if (ViewData["Messages"] != null)
-{
-    <div class="alert">@ViewData["Messages"]</div>
-}
 
 <form method="post" enctype="multipart/form-data" asp-page-handler="ImportCsv">
     <input style="margin-bottom: 10px; margin-top: 10px" type="file" id="csvFile" name="csvFile"/>
@@ -17,12 +13,31 @@
     <button type="submit" id="submitButton" disabled>Import</button>
 </form>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- Add toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <script>
-    document.getElementById('csvFile').addEventListener('change', function() {
-        if (this.value) {
-            document.getElementById('submitButton').disabled = false;
-        } else {
-            document.getElementById('submitButton').disabled = true;
-        }
-    });
-</script>
+        $(document).ready(function() {
+            toastr.options = {
+               "preventDuplicates": true,
+               "timeOut": 4567,
+            }
+                        
+            var messages = @Html.Raw(Json.Serialize(ViewData["Messages"]));
+            var messageType = @Html.Raw(Json.Serialize(ViewData["MessageType"]));
+            if (messages && messages.length > 0) {
+                for (var i = 0; i < messages.length; i++) {
+                    if (messageType === "alert-success") {
+                        toastr.success(messages[i]);
+                    } else {
+                        toastr.error(messages[i]);
+                    }
+                }
+            }
+        });
+
+        document.getElementById('csvFile').addEventListener('change', function() {
+            document.getElementById('submitButton').disabled = !this.value;
+        });
+    </script>

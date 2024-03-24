@@ -6,7 +6,7 @@ namespace Schedule.Services;
 
 public class ValidationService
 {
-    private ScheduleManagementContext _context;
+    private readonly ScheduleManagementContext _context;
 
     public ValidationService(ScheduleManagementContext context)
     {

@@ -2,6 +2,7 @@ using System.Globalization;
 using CsvHelper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using Schedule.DTO;
 using Schedule.Models;
 using Schedule.Services;
@@ -27,11 +28,11 @@ public class ImportCsv : PageModel
             string folder = "wwwroot/import";
             string filePath = _csvService.UploadFile(csvFile, folder);
             List<CsvDataDTO> records = _csvService.ReadDataScheduleFromFile(filePath);
-            List<string> messages = new List<string>();
-            for (int i = 0; i < records.Count; i++)
+            var messages = new List<string>();
+            foreach (var record in records)
             {
-                string message = _dataService.AddDataToDatabase(records[i]);
-                messages.Add(message);
+                var message = _dataService.AddDataToDatabase(record);
+                messages.AddRange(message);
             }
 
             ViewData["Messages"] = messages;

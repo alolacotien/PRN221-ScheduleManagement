@@ -50,8 +50,7 @@ public class CsvFileService
 
         string fileNameSave = Path.GetFileNameWithoutExtension(fileUpload.FileName) +
                               DateTime.Now.ToString("yyyy.MM.dd.HH.mm.ss") + Path.GetExtension(fileUpload.FileName);
-
-
+        
         var file = Path.Combine(pathDirectory, fileNameSave);
 
         using (var fileStream = new FileStream(file, FileMode.Create))

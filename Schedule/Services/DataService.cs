@@ -1,6 +1,7 @@
 using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Schedule.DTO;
 using Schedule.Mapper;
 using Schedule.Models;
@@ -12,79 +13,58 @@ public class DataService
     private readonly ScheduleManagementContext _context;
 
 
-
     public DataService(ScheduleManagementContext context)
     {
         _context = context;
     }
 
-    
-    
-    public string AddDataToDatabase(CsvDataDTO data)
-    {
-        int messageId = IsExist(data);
-        if (messageId == 0)
-        {
-            Models.Schedule schedule = GetScheduleFromData(data);
 
-            string message = IsValid(schedule);
+    public List<string> AddDataToDatabase(CsvDataDTO csvData)
+    {
+        List<string> messages = new List<string>();
+        
+        if (_context.Teachers.FirstOrDefault(t => t.Code == csvData.Teacher) == null)
+            messages.Add( $"Teacher {csvData.Teacher} does not exists");
+        if (_context.Subjects.FirstOrDefault(t => t.Code == csvData.Subject) == null)
+            messages.Add($"Subject {csvData.Subject} does not exists"); 
+        if (_context.GroupClasses.FirstOrDefault(t => t.Code == csvData.Class) == null)
+            messages.Add($"Class {csvData.Class} does not exists");
+        if (_context.Rooms.FirstOrDefault(t => t.Code == csvData.Room) == null)
+            messages.Add($"Room {csvData.Room} does not exists"); 
+        if (_context.Slots.FirstOrDefault(t => t.SlotName == csvData.Slot) == null)
+            messages.Add($"Slot {csvData.Slot} does not exists"); 
+        
+        if (messages.Count > 0)
+        {
+            return messages;
+        }
+        
+        Models.Schedule schedule = GetScheduleFromData(csvData);
+        
+        string message = IsValid(schedule);
+        if (message != "")
+        {
+            messages.Add(message);
+            return messages;
+        }
+        
+        try
+        {
+            _context.Schedules.Add(schedule);
+            _context.SaveChanges();
+        }
+        catch 
+        {
+            message = FindConstraintError(schedule);
             if (message != "")
             {
-                return message;
-            }
-
-            try
-            {
-                _context.Schedules.Add(schedule);
-                _context.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                return FindConstraintError(schedule);
-            }
-        }
-        else
-        {
-            if (messageId == 1)
-            {
-                return "Teacher code do not exists";
-            }
-
-            if (messageId == 2)
-            {
-                return "Subject code do not exists";
-            }
-
-            if (messageId == 3)
-            {
-                return "Class code do not exists";
-            }
-
-            if (messageId == 4)
-            {
-                return "Room code do not exists";
-            }
-
-            if (messageId == 5)
-            {
-                return "Wrong slot template!";
+                messages.Add(message);
+                return messages;
             }
         }
 
-
-        return "Saved successfully!";
-    }
-
-    private int IsExist(CsvDataDTO csvData)
-    {
-        string roomCode = csvData.Room;
-        if (_context.Teachers.FirstOrDefault(t => t.Code == csvData.Teacher) == null) return 1;
-        if (_context.Subjects.FirstOrDefault(t => t.Code == csvData.Subject) == null) return 2;
-        if (_context.GroupClasses.FirstOrDefault(t => t.Code == csvData.Class) == null) return 3;
-        if (_context.Rooms.FirstOrDefault(t => t.Code == roomCode) == null) return 4;
-        if (_context.Slots.FirstOrDefault(t => t.SlotName == csvData.Slot) == null) return 5;
-
-        return 0;
+        messages.Add("Saved successfully!");
+        return messages;
     }
 
     private Models.Schedule GetScheduleFromData(CsvDataDTO data)
@@ -104,7 +84,6 @@ public class DataService
     private string IsValid(Models.Schedule schedule)
     {
         ValidationService validationService = new ValidationService(_context);
-
         return validationService.MessageValidateSchedule(schedule);
     }
 

@@ -8,21 +8,33 @@
 <style>
     th, td {
     border: 1px solid black;
-    padding: 6px 20px 6px 20px;
+    padding: 6px 30px 6px 30px;
     }
     
+    th{
+    color: white;
+    }
     
     table{
        border-collapse: collapse;
        }
 </style>
 
-<h2>Schedule</h2>
+<h1>Schedule</h1>
 <br/>
 
 <table>
-    <tr>
+    <tr style="background-color: #0d6efd;">
         <th>
+            <form method="post" asp-page-handler="filter">
+                <select name="ClassIdSelected" onchange="this.form.submit()">
+                    <option value="0">All classes</option>
+                    @foreach (var c in Model.Classes)
+                    {
+                        <option value="@c.Id" selected="@(Model.ClassIdSelected == c.Id ? "selected" : null)">@c.Code</option>
+                    }
+                </select>
+            </form>
         </th>
         <th>MON</th>
         <th>TUE</th>
@@ -42,7 +54,7 @@
                 if (Model.Data[i, j] != null)
                 {
                     <td>
-                        @Model.Data[i, j].Subject.Code <br/> 
+                        @Model.Data[i, j].Subject.Code <br/>
                         @Model.Data[i, j].Room.Code <br/>
                         @Model.Data[i, j].Teacher.Code
                     </td>
