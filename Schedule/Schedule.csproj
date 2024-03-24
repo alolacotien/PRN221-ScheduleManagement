@@ -35,6 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Pages\Class\" />
+    <Folder Include="Pages\Room\" />
+    <Folder Include="Pages\Slot\" />
+    <Folder Include="Pages\Subject\" />
+    <Folder Include="Pages\Teacher\" />
     <Folder Include="wwwroot\Import\" />
   </ItemGroup>
 

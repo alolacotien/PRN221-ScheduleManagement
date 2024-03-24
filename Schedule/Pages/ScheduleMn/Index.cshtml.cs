@@ -37,25 +37,48 @@ public class Index : PageModel
             .Include(s => s.Class)
             .Include(s => s.Room)
             .ToList();
-        
-        foreach (var item in schedules)
+
+        foreach (var s in schedules)
         {
-            if (item.Slot.SlotName[0] == 'A')
+            if (s.Slot.SlotName[0] == 'A')
             {
-                int daySlot1 = Int32.Parse(item.Slot.SlotName[1].ToString());
-                int daySlot2 = Int32.Parse(item.Slot.SlotName[2].ToString());
-                Data[0, daySlot1 - 2] = item;
-                Data[1, daySlot2 - 2] = item;
+                int morning1 = Int32.Parse(s.Slot.SlotName[1].ToString());
+                int morning2 = Int32.Parse(s.Slot.SlotName[2].ToString());
+
+                if (morning1 == 1 && morning2 > 1)
+                {
+                    Data[1, morning2 - 2] = s;
+                }
+                else if (morning2 == 1 && morning1 > 1)
+                {
+                    Data[0, morning1 - 2] = s;
+                }
+                else
+                {
+                    Data[0, morning1 - 2] = s;
+                    Data[1, morning2 - 2] = s;
+                }
             }
-            else if (item.Slot.SlotName[0] == 'P')
+            else if (s.Slot.SlotName[0] == 'P')
             {
-                int daySlot1 = Int32.Parse(item.Slot.SlotName[1].ToString());
-                int daySlot2 = Int32.Parse(item.Slot.SlotName[2].ToString());
-                Data[2, daySlot1 - 2] = item;
-                Data[3, daySlot2 - 2] = item;
+                int afternoon1 = Int32.Parse(s.Slot.SlotName[1].ToString());
+                int afternoon2 = Int32.Parse(s.Slot.SlotName[2].ToString());
+
+                if (afternoon1 == 1 && afternoon2 > 1)
+                {
+                    Data[3, afternoon2 - 2] = s;
+                }
+                else if (afternoon2 == 1 && afternoon1 > 1)
+                {
+                    Data[2, afternoon1 - 2] = s;
+                }
+                else
+                {
+                    Data[2, afternoon1 - 2] = s;
+                    Data[3, afternoon2 - 2] = s;
+                }
             }
         }
-
     }
 
     public void OnPostFilter()
