@@ -11,51 +11,42 @@ namespace Schedule.Services;
 public class DataService
 {
     private readonly ScheduleManagementContext _context;
+    private readonly ValidationService _validationService;
 
-
-    public DataService(ScheduleManagementContext context)
+    public DataService(ScheduleManagementContext context, ValidationService validationService)
     {
         _context = context;
+        _validationService = validationService;
     }
 
 
     public List<string> AddDataToDatabase(CsvDataDTO csvData)
     {
-        List<string> messages = new List<string>();
-        
-        if (_context.Teachers.FirstOrDefault(t => t.Code == csvData.Teacher) == null)
-            messages.Add( $"Teacher {csvData.Teacher} does not exists");
-        if (_context.Subjects.FirstOrDefault(t => t.Code == csvData.Subject) == null)
-            messages.Add($"Subject {csvData.Subject} does not exists"); 
-        if (_context.GroupClasses.FirstOrDefault(t => t.Code == csvData.Class) == null)
-            messages.Add($"Class {csvData.Class} does not exists");
-        if (_context.Rooms.FirstOrDefault(t => t.Code == csvData.Room) == null)
-            messages.Add($"Room {csvData.Room} does not exists"); 
-        if (_context.Slots.FirstOrDefault(t => t.SlotName == csvData.Slot) == null)
-            messages.Add($"Slot {csvData.Slot} does not exists"); 
-        
+        List<string> messages = _validationService.MessageValidateData(csvData);
+
         if (messages.Count > 0)
         {
             return messages;
         }
-        
+
         Models.Schedule schedule = GetScheduleFromData(csvData);
-        
-        string message = IsValid(schedule);
+
+        string message = _validationService.MessageCheckAvailableData(schedule);
         if (message != "")
         {
             messages.Add(message);
             return messages;
         }
-        
+
         try
         {
             _context.Schedules.Add(schedule);
             _context.SaveChanges();
         }
-        catch 
+        catch
         {
-            message = FindConstraintError(schedule);
+
+            message = _validationService.MessageCheckAvailableData(schedule);
             if (message != "")
             {
                 messages.Add(message);
@@ -79,31 +70,6 @@ public class DataService
         };
 
         return schedule;
-    }
-
-    private string IsValid(Models.Schedule schedule)
-    {
-        ValidationService validationService = new ValidationService(_context);
-        return validationService.MessageValidateSchedule(schedule);
-    }
-
-    private string FindConstraintError(Models.Schedule schedule)
-    {
-        ValidationService validationService = new ValidationService(_context);
-        string message;
-        message = validationService.CheckSlotAndRoom(schedule);
-        if (message != "") return message;
-
-        message = validationService.CheckSlotAndTeacher(schedule);
-        if (message != "") return message;
-
-        message = validationService.CheckSlotAndClass(schedule);
-        if (message != "") return message;
-
-        message = validationService.CheckClassAndSubject(schedule);
-        if (message != "") return message;
-
-        return "";
     }
 
     public void DeleteAllData()

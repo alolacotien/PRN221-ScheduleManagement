@@ -7,10 +7,11 @@
 <h3>Import Schedule from CSV file</h3>
 <br/>
 
-<form method="post" enctype="multipart/form-data" asp-page-handler="ImportCsv">
-    <input style="margin-bottom: 10px;" type="file" id="csvFile" name="csvFile"/>
-    <br/>
-    <button type="submit" id="submitButton" disabled>Import</button>
+<form method="post" enctype="multipart/form-data" asp-page-handler="ImportCsv" class="form-inline">
+    <div class="form-group mb-2">
+        <input type="file" class="form-control-file" id="csvFile" name="csvFile"/>
+    </div>
+    <button type="submit" class="btn btn-primary mb-2 ml-2" id="submitButton" disabled>Import</button>
 </form>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

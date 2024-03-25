@@ -67,9 +67,9 @@ public class ValidationService
         return "";
     }
     
-    public string MessageValidateSchedule(Models.Schedule schedule)
+    public string MessageCheckAvailableData(Models.Schedule schedule)
     {
-        string message = "";
+        string message;
 
         message = CheckClassAndSubject(schedule);
         if(message != "")
@@ -96,5 +96,23 @@ public class ValidationService
         }
 
         return message;
+    }
+    
+    public List<string> MessageValidateData(CsvDataDTO csvData)
+    {
+        List<string> messages = new List<string>();
+
+        if (_context.Teachers.FirstOrDefault(t => t.Code == csvData.Teacher) == null)
+            messages.Add( $"Teacher {csvData.Teacher} does not exists");
+        if (_context.Subjects.FirstOrDefault(t => t.Code == csvData.Subject) == null)
+            messages.Add($"Subject {csvData.Subject} does not exists");
+        if (_context.GroupClasses.FirstOrDefault(t => t.Code == csvData.Class) == null)
+            messages.Add($"Class {csvData.Class} does not exists");
+        if (_context.Rooms.FirstOrDefault(t => t.Code == csvData.Room) == null)
+            messages.Add($"Room {csvData.Room} does not exists");
+        if (_context.Slots.FirstOrDefault(t => t.SlotName == csvData.Slot) == null)
+            messages.Add($"Slot {csvData.Slot} does not exists");
+
+        return messages;
     }
 }
