@@ -17,7 +17,7 @@ public class CsvFileService
         _dataService = dataService;
     }
     
-    public List<CsvDataDTO> ReadDataScheduleFromFile(string path)
+    public List<CsvDataDTO> ReadDataFromFile(string path)
     {
         if (File.Exists(path))
         {

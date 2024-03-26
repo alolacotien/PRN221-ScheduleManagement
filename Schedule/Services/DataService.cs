@@ -1,9 +1,4 @@
-using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
-using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using Schedule.DTO;
-using Schedule.Mapper;
 using Schedule.Models;
 
 namespace Schedule.Services;
@@ -20,7 +15,7 @@ public class DataService
     }
 
 
-    public List<string> AddDataToDatabase(CsvDataDTO csvData)
+    public List<string> AddDataToDb(CsvDataDTO csvData)
     {
         List<string> messages = _validationService.MessageValidateData(csvData);
 
@@ -31,10 +26,11 @@ public class DataService
 
         Models.Schedule schedule = GetScheduleFromData(csvData);
 
-        string message = _validationService.MessageCheckAvailableData(schedule);
-        if (message != "")
+        List<string> validationMessages = _validationService.MessageValidateData(schedule);
+        
+        if (validationMessages.Count > 0)
         {
-            messages.Add(message);
+            messages.AddRange(validationMessages);
             return messages;
         }
 
@@ -43,15 +39,10 @@ public class DataService
             _context.Schedules.Add(schedule);
             _context.SaveChanges();
         }
-        catch
+        catch(Exception ex)
         {
-
-            message = _validationService.MessageCheckAvailableData(schedule);
-            if (message != "")
-            {
-                messages.Add(message);
-                return messages;
-            }
+            messages.Add($"An error occurred while saving the schedule: {ex.Message}");
+            return messages;
         }
 
         messages.Add("Saved successfully!");

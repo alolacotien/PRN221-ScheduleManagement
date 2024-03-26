@@ -13,7 +13,7 @@ public class ValidationService
         _context = context;
     }
 
-    public string CheckSlotAndRoom(Models.Schedule schedule)
+    private string CheckSlotAndRoom(Models.Schedule schedule)
     {
         var roomAndSlot = _context.Schedules
             .Include(s => s.Slot)
@@ -26,8 +26,8 @@ public class ValidationService
 
         return "";
     }
-    
-    public string CheckSlotAndTeacher(Models.Schedule schedule)
+
+    private string CheckSlotAndTeacher(Models.Schedule schedule)
     {
         var teacherAndSlot = _context.Schedules
             .Include(s => s.Slot)
@@ -39,8 +39,8 @@ public class ValidationService
         }
         return "";
     }
-    
-    public string CheckSlotAndClass(Models.Schedule schedule)
+
+    private string CheckSlotAndClass(Models.Schedule schedule)
     {
         var classAndSlot = _context.Schedules
             .Include(s => s.Slot)
@@ -52,8 +52,8 @@ public class ValidationService
         }
         return "";
     }
-    
-    public string CheckClassAndSubject(Models.Schedule schedule)
+
+    private string CheckClassAndSubject(Models.Schedule schedule)
     {
         var classAndSubject = _context.Schedules
             .Include(s => s.Subject)
@@ -67,35 +67,35 @@ public class ValidationService
         return "";
     }
     
-    public string MessageCheckAvailableData(Models.Schedule schedule)
+    public List<string> MessageValidateData(Models.Schedule schedule)
     {
-        string message;
+        List<string> messages = new List<string>();
 
-        message = CheckClassAndSubject(schedule);
+        string message = CheckClassAndSubject(schedule);
         if(message != "")
         {
-            return message;
+            messages.Add(message);
         }
 
         message = CheckSlotAndRoom(schedule);
         if (message != "")
         {
-            return message;
+            messages.Add(message);
         }
 
         message = CheckSlotAndTeacher(schedule);
         if (message != "")
         {
-            return message;
+            messages.Add(message);
         }
 
         message = CheckSlotAndClass(schedule);
         if (message != "")
         {
-            return message;
+            messages.Add(message);
         }
 
-        return message;
+        return messages;
     }
     
     public List<string> MessageValidateData(CsvDataDTO csvData)

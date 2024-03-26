@@ -45,11 +45,11 @@ public class Index : PageModel
                 int morning1 = Int32.Parse(s.Slot.SlotName[1].ToString());
                 int morning2 = Int32.Parse(s.Slot.SlotName[2].ToString());
 
-                if (morning1 <= 1 && morning2 > 1)
+                if (morning1 < 2 && morning2 >= 2)
                 {
                     Data[1, morning2 - 2] = s;
                 }
-                else if (morning2 <= 1 && morning1 > 1)
+                else if (morning2 < 2 && morning1 >= 2)
                 {
                     Data[0, morning1 - 2] = s;
                 }
@@ -64,11 +64,11 @@ public class Index : PageModel
                 int afternoon1 = Int32.Parse(s.Slot.SlotName[1].ToString());
                 int afternoon2 = Int32.Parse(s.Slot.SlotName[2].ToString());
 
-                if (afternoon1 <= 1 && afternoon2 > 1)
+                if (afternoon1 < 2 && afternoon2 >= 2)
                 {
                     Data[3, afternoon2 - 2] = s;
                 }
-                else if (afternoon2 <= 1 && afternoon1 > 1)
+                else if (afternoon2 < 2 && afternoon1 >= 2)
                 {
                     Data[2, afternoon1 - 2] = s;
                 }

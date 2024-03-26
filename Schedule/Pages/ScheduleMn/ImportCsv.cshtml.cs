@@ -27,11 +27,11 @@ public class ImportCsv : PageModel
 
             string folder = "wwwroot/import";
             string filePath = _csvService.UploadFile(csvFile, folder);
-            List<CsvDataDTO> records = _csvService.ReadDataScheduleFromFile(filePath);
+            List<CsvDataDTO> records = _csvService.ReadDataFromFile(filePath);
             var messages = new List<string>();
             foreach (var record in records)
             {
-                var message = _dataService.AddDataToDatabase(record);
+                var message = _dataService.AddDataToDb(record);
                 messages.AddRange(message);
             }
 
