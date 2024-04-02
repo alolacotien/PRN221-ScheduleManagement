@@ -32,6 +32,7 @@
     <_ContentIncludedByDefault Remove="Pages\Class\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Class\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Pages\Class\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\UpdateSlot\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
